@@ -1,5 +1,6 @@
 class Api::V1::LoginsController < ApplicationController
   def create
+    # binding.pry
     query_params = {
       client_id: ENV["CLIENT_ID"],
       response_type: "code",

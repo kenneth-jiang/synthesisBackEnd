@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       # resources :logins
 
       get 'login', to: "logins#create"
-      get 'userauth', to: "users#create"
+      post 'home', to: "users#create"
     end
   end
 end

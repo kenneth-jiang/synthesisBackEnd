@@ -24,7 +24,6 @@ class Api::V1::UsersController < ApplicationController
     user_response = RestClient.get('https://api.spotify.com/v1/me', header)
     user_params = JSON.parse(user_response.body)
 
-    binding.pry
 
     @user = User.find_or_create_by(
       username: user_params["id"],
@@ -34,12 +33,12 @@ class Api::V1::UsersController < ApplicationController
     )
 
     payload = {:access_token => auth_params["access_token"]}
-    token = JWT.encode payload, ENV["MY_SECRET"], 'HS256'
+    token = JWT.encode payload, ENV["MY_SECRET"], ENV["ES"]
 
     @user.update(
       access_token: token
     )
 
-    redirect_to "#{BASE_URL}/home"
+    render json: {username: @user.username, code: @user.access_token}
   end
 end
