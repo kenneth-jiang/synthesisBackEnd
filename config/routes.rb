@@ -4,11 +4,11 @@ Rails.application.routes.draw do
       resources :songs
       resources :liked_artists
       resources :artists
-      resources :users
+      resources :users, except: [:create]
       # resources :logins
 
       get 'login', to: "logins#create"
-      get 'userauth', to: "logins#redirectURL"
+      get 'userauth', to: "users#create"
     end
   end
 end
