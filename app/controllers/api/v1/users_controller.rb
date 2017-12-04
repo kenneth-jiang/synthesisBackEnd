@@ -27,6 +27,7 @@ class Api::V1::UsersController < ApplicationController
 
     @user = User.find_or_create_by(
       username: user_params["id"],
+      display_name: user_params["display_name"],
       spotify_url: user_params["external_urls"]["spotify"],
       href: user_params["href"],
       uri: user_params["uri"]
@@ -39,6 +40,9 @@ class Api::V1::UsersController < ApplicationController
       access_token: token
     )
 
-    render json: {username: @user.username, code: @user.access_token}
+    jwt_payload = {:user_id => @user.id}
+    jwt = JWT.encode jwt_payload, ENV["MY_SECRET"], ENV["ES"]
+    serialized_user = UserSerializer.new(@user).attributes
+    render json: {currentUser: serialized_user, code: jwt}
   end
 end
