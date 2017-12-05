@@ -1,10 +1,4 @@
-BASE_URL = "http://localhost:3001"
-
 class Api::V1::UsersController < ApplicationController
-  def index
-    render json: User.all
-  end
-
   def create
     body = {
       grant_type: "authorization_code",
@@ -34,7 +28,7 @@ class Api::V1::UsersController < ApplicationController
     )
 
     payload = {:access_token => auth_params["access_token"]}
-    token = JWT.encode payload, ENV["MY_SECRET"], ENV["ES"]
+    token = JWT.encode(payload, ENV["MY_SECRET"], ENV["ES"])
 
     @user.update(
       access_token: token
